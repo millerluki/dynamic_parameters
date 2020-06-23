@@ -12,7 +12,7 @@ class DynamicPublisher(Node):
         self.get_logger().info("Running...")
 
         self.declare_parameter("name", "world")
-        self.declare_parameter("topic_out", "chatter")
+        self.declare_parameter("topic_out", "out")
 
         self.name = self.get_parameter("name").get_parameter_value()._string_value
         self.topic_out = self.get_parameter("topic_out").get_parameter_value()._string_value

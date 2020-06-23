@@ -9,8 +9,9 @@ class DynamicSubscriber(Node):
 
     def __init__(self):
         super().__init__('minimal_dynamic_param')
+        self.get_logger().info("Running...")
 
-        self.declare_parameter("topic_in", "chatter")
+        self.declare_parameter("topic_in", "in")
 
         self.topic_in = self.get_parameter("topic_in").get_parameter_value()._string_value
         self._subscriber = self.create_subscription(String, self.topic_in, self._cb_topic_in, 10)
