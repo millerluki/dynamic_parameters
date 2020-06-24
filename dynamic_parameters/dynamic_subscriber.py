@@ -38,7 +38,13 @@ class DynamicSubscriber(Node):
 def main():
     rclpy.init()
     node = DynamicSubscriber()
-    rclpy.spin(node)
+    try:
+        rclpy.spin(node)
+    except KeyboardInterrupt:
+        node.get_logger().warn("Shutdown...")
+        node.destroy_node()
+
+    rclpy.shutdown()
 
 if __name__ == '__main__':
     main()
