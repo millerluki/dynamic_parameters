@@ -1,5 +1,6 @@
 import rclpy
 from rclpy.node import Node
+from rclpy.logging import LoggingSeverity
 from std_msgs.msg import String
 from rclpy.parameter import Parameter
 from rcl_interfaces.msg import SetParametersResult
@@ -57,7 +58,13 @@ class DynamicPublisher(Node):
 def main():
     rclpy.init()
     node = DynamicPublisher()
-    rclpy.spin(node)
+    try:
+        rclpy.spin(node)
+    except KeyboardInterrupt:
+        node.get_logger().warn("Shutdown...")
+        node.destroy_node()
+
+    rclpy.shutdown()
 
 if __name__ == '__main__':
     main()
