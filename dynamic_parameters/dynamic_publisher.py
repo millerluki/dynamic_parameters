@@ -10,7 +10,8 @@ class DynamicPublisher(Node):
 
     def __init__(self):
         super().__init__('dynamic_publisher')
-        self.get_logger().info("Running...")
+        self.log = self.get_logger()
+        self.log.info("Running...")
 
         self.declare_parameter("name", "world")
         self.declare_parameter("topic_out", "out")
@@ -20,7 +21,7 @@ class DynamicPublisher(Node):
 
         self._publisher = self.create_publisher(String, self.topic_out, 10)
 
-        timer_period = 2  # seconds
+        timer_period = 1.5  # seconds
         self.timer = self.create_timer(timer_period, self.timer_callback)
 
         self.add_on_set_parameters_callback(self._cb_params)
@@ -32,7 +33,7 @@ class DynamicPublisher(Node):
                 if parameter.type_ == Parameter.Type.STRING:
                     self.name = parameter.value
                 else:
-                    self.get_logger().error("data type must be STRING")
+                    self.log.error("data type must be STRING")
 
             if parameter.name == "topic_out":
                 if parameter.type_ == Parameter.Type.STRING:
@@ -40,7 +41,7 @@ class DynamicPublisher(Node):
                     self.topic_out = parameter.value
                     self._publisher = self.create_publisher(String, self.topic_out, 10)
                 else:
-                    self.get_logger().error("data type must be STRING")
+                    self.log.error("data type must be STRING")
 
         return SetParametersResult(successful=True)
 
@@ -61,7 +62,7 @@ def main():
     try:
         rclpy.spin(node)
     except KeyboardInterrupt:
-        node.get_logger().warn("Shutdown...")
+        node.log.warn("Shutdown...")
         node.destroy_node()
 
     rclpy.shutdown()

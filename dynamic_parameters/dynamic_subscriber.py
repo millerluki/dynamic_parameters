@@ -8,8 +8,9 @@ from rclpy.exceptions import ParameterNotDeclaredException
 class DynamicSubscriber(Node):
 
     def __init__(self):
-        super().__init__('minimal_dynamic_param')
-        self.get_logger().info("Running...")
+        super().__init__('dynamic_subscriber')
+        self.log = self.get_logger()
+        self.log.info("Running...")
 
         self.declare_parameter("topic_in", "in")
 
@@ -27,12 +28,12 @@ class DynamicSubscriber(Node):
                     self.topic_in = parameter.value
                     self._subscriber = self.create_subscription(String, self.topic_in, self._cb_topic_in, 10)
                 else:
-                    self.get_logger().error("data type must be STRING")
+                    self.log.error("data type must be STRING")
 
         return SetParametersResult(successful=True)
 
     def _cb_topic_in(self, msg):
-        self.get_logger().info(msg.data)
+        self.log.info(msg.data)
 
 
 def main():
@@ -41,7 +42,7 @@ def main():
     try:
         rclpy.spin(node)
     except KeyboardInterrupt:
-        node.get_logger().warn("Shutdown...")
+        node.log().warn("Shutdown...")
         node.destroy_node()
 
     rclpy.shutdown()

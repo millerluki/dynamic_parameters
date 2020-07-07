@@ -24,7 +24,7 @@ setup(
     entry_points={
         'console_scripts': [
             'dynamic_publisher = dynamic_parameters.dynamic_publisher:main',
-            'dynamic_subscriber = dynamic_parameters.dynamic_subscriber:main'
+            'dynamic_subscriber = dynamic_parameters.dynamic_subscriber:main',
         ],
     },
 )
